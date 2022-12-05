@@ -1,4 +1,5 @@
 {
+  "homepage": "https://DmitryLotkov.github.io/Notes-App",
   "name": "test-task",
   "version": "0.1.0",
   "private": true,
@@ -30,7 +31,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -60,6 +63,7 @@
     "eslint-plugin-jsx-a11y": "^6.6.1",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "gh-pages": "^4.0.0",
     "prettier": "2.8.0",
     "sass": "^1.56.1"
   }
