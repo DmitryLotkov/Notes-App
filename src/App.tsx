@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { FC, useEffect, useState } from "react";
 
-function App() {
+import { v1 } from "uuid";
+
+import { AddItemForm } from "./components/AddItemForm/AddItemForm";
+import { NotesPlanner } from "./components/notesPlanner/NotesPlanner";
+
+export type NoteType = {
+  id: string;
+  content: string;
+};
+
+export const App: FC = () => {
+  const [data, setData] = useState<Array<NoteType>>(() => JSON.parse(localStorage.getItem("notes") as string) || []);
+
+  const changeNotesPlannerTitle = (title: string) => {
+    if (data) {
+      setData(data.concat({ id: v1(), content: title }).reverse());
+    }
+  };
+  const deleteNote = (id: string) => {
+    if (data) {
+      setData(data.filter((item) => item.id !== id));
+    }
+  };
+  useEffect(() => {
+    const notes = localStorage.getItem("notes");
+    if (notes) {
+      const newValue = JSON.parse(notes);
+      setData(newValue);
+    }
+  }, []);
+  useEffect(() => {
+    localStorage.setItem("notes", JSON.stringify(data));
+  }, [data]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <AddItemForm addItem={changeNotesPlannerTitle} />
+      <NotesPlanner notes={data} deleteNote={deleteNote} />
+    </>
   );
-}
-
-export default App;
+};
